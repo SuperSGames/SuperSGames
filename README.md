@@ -1,5 +1,8 @@
 ## Hi there 👋
 
+> **공통 최신 버전 작업 규칙 (2026-11-08)**: 사용자가 **명시적으로 이전 버전을 지정하지 않으면**, 모든 프로젝트의 수정·제작·병합·HTML/AIT 변환·빌드·테스트·배포는 **검증된 실제 최신 버전**만 기준으로 한다. 저장소 최신 커밋과 사용자가 지정한 테스트 웹/경로(특히 `/toss`)를 대조하고 과거 버전으로 임의 회귀하지 않는다. 기존 UI·게임 기능·에셋·결제·광고·진동·설정을 보존하며 요청한 부분만 변경한다. 원본 확인 불가 시 미확인을 알린다. 새 프로젝트도 `NEW_PROJECT_BOOTSTRAP.md`와 `AGENTS.md` 규칙을 따른다.
+
+
 <!--
 **SuperSGames/SuperSGames** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
