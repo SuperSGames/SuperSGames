@@ -48,21 +48,35 @@ button{font:inherit;cursor:pointer;color:inherit;touch-action:manipulation}
 /* Matching original bubble squish-pop motion, using the existing raster art. */
 @keyframes bubbleBang{0%{transform:scale(1)}38%{transform:scale(1.3,.82)}65%{transform:scale(.88,1.27)}100%{transform:scale(1.5);opacity:0}}
 @keyframes bubbleJelly{0%{filter:brightness(1)}45%{filter:brightness(1.5) saturate(1.5)}100%{filter:brightness(2);opacity:0}}
-/* Outline-only indicators: the board stays untouched and only the puzzle edge lights up. */
-#board .cell.matchEffect::after,#board .cell.rainbowSpecial::after{content:"";position:absolute;inset:2px;border:3px solid transparent;border-radius:18px;opacity:0;pointer-events:none;z-index:3}
-@keyframes flameOutline{0%,100%{opacity:.72;border-color:#ff6938;box-shadow:0 0 2px #ff4c25,inset 0 0 2px #ffd17a}45%{opacity:1;border-color:#ff3a16;box-shadow:0 0 5px #ff4a20,inset 0 0 4px #fff0ad}72%{opacity:.8;border-color:#ff9a34;box-shadow:0 0 3px #ff7b20,inset 0 0 2px #ffe09a}}
-@keyframes starOutline{0%,100%{opacity:.7;border-color:#11bdf4;box-shadow:0 0 2px #08a9ff,inset 0 0 2px #b7f7ff}22%,42%{opacity:1;border-color:#d9fbff;box-shadow:0 0 6px #12d9ff,inset 0 0 4px #fff}68%{opacity:.82;border-color:#277dff;box-shadow:0 0 3px #168eff,inset 0 0 2px #a5efff}}
-@keyframes cubeOutline{0%{opacity:.8;border-color:#ff3fb5;box-shadow:0 0 3px #ff3fb5,inset 0 0 2px #ffd0ef}25%{opacity:1;border-color:#ffd21f;box-shadow:0 0 5px #ffd21f,inset 0 0 3px #fff3ad}50%{opacity:1;border-color:#00d7ff;box-shadow:0 0 5px #00d7ff,inset 0 0 3px #caffff}75%{opacity:1;border-color:#995cff;box-shadow:0 0 5px #995cff,inset 0 0 3px #e2d2ff}100%{opacity:.8;border-color:#ff3fb5;box-shadow:0 0 3px #ff3fb5,inset 0 0 2px #ffd0ef}}
-@keyframes multiOutline{0%,100%{opacity:.75;border-color:#ffb914;box-shadow:0 0 2px #ff9d00,inset 0 0 2px #fff0a3}45%{opacity:1;border-color:#fff36a;box-shadow:0 0 6px #ffd21f,inset 0 0 4px #fff}72%{opacity:.85;border-color:#ff8f00;box-shadow:0 0 3px #ffac00,inset 0 0 2px #ffe3a0}}
-#board .cell.matchEffect.effect-flame::after{animation:flameOutline .68s ease-in-out 1}
-#board .cell.matchEffect.effect-star::after{animation:starOutline .48s steps(2,end) 1}
-#board .cell.matchEffect.effect-cube::after{animation:cubeOutline .95s linear 1}
-#board .cell.matchEffect.effect-multi::after{animation:multiOutline .62s ease-in-out 1}
+/* Two-layer puzzle-edge glow: a crisp rim plus a blurred halo behind it. */
+#board .cell.matchEffect::before,#board .cell.rainbowSpecial::before,#board .cell.matchEffect::after,#board .cell.rainbowSpecial::after{content:"";position:absolute;inset:3px;border-radius:18px;opacity:0;pointer-events:none}
+#board .cell.matchEffect::before,#board .cell.rainbowSpecial::before{border:3px solid transparent;z-index:2;filter:blur(4px)}
+#board .cell.matchEffect::after,#board .cell.rainbowSpecial::after{border:2px solid transparent;z-index:3}
+@keyframes flameHalo{0%,100%{opacity:.42;border-color:#ff6a32;filter:blur(3px)}45%{opacity:.95;border-color:#ff3213;filter:blur(5px)}72%{opacity:.62;border-color:#ffae46;filter:blur(4px)}}
+@keyframes flameCore{0%,100%{opacity:.82;border-color:#ff9a4a;box-shadow:0 0 2px #ff5725}45%{opacity:1;border-color:#fff0ad;box-shadow:0 0 4px #ff3c16}72%{opacity:.9;border-color:#ffbd5b;box-shadow:0 0 3px #ff7b22}}
+@keyframes starHalo{0%,100%{opacity:.4;border-color:#10bdf4;filter:blur(3px)}22%,42%{opacity:1;border-color:#11d9ff;filter:blur(5px)}68%{opacity:.58;border-color:#347fff;filter:blur(4px)}}
+@keyframes starCore{0%,100%{opacity:.82;border-color:#4bdcff;box-shadow:0 0 2px #08a9ff}22%,42%{opacity:1;border-color:#e4fdff;box-shadow:0 0 5px #12d9ff}68%{opacity:.9;border-color:#4c9bff;box-shadow:0 0 3px #168eff}}
+@keyframes cubeHalo{0%{opacity:.5;border-color:#ff3fb5;filter:blur(3px)}25%{opacity:.8;border-color:#ffd21f;filter:blur(4px)}50%{opacity:.9;border-color:#00d7ff;filter:blur(5px)}75%{opacity:.8;border-color:#995cff;filter:blur(4px)}100%{opacity:.5;border-color:#ff3fb5;filter:blur(3px)}}
+@keyframes cubeCore{0%{opacity:.86;border-color:#ff79c7;box-shadow:0 0 3px #ff3fb5}25%{opacity:1;border-color:#fff2a8;box-shadow:0 0 4px #ffd21f}50%{opacity:1;border-color:#e1fcff;box-shadow:0 0 5px #00d7ff}75%{opacity:1;border-color:#eadbff;box-shadow:0 0 4px #995cff}100%{opacity:.86;border-color:#ff79c7;box-shadow:0 0 3px #ff3fb5}}
+@keyframes multiHalo{0%,100%{opacity:.42;border-color:#ffb914;filter:blur(3px)}45%{opacity:1;border-color:#ffe21e;filter:blur(5px)}72%{opacity:.62;border-color:#ff8f00;filter:blur(4px)}}
+@keyframes multiCore{0%,100%{opacity:.84;border-color:#ffd24a;box-shadow:0 0 2px #ff9d00}45%{opacity:1;border-color:#fffbd0;box-shadow:0 0 5px #ffd21f}72%{opacity:.9;border-color:#ffac2d;box-shadow:0 0 3px #ffac00}}
+#board .cell.matchEffect.effect-flame::before{animation:flameHalo .68s ease-in-out 1}
+#board .cell.matchEffect.effect-flame::after{animation:flameCore .68s ease-in-out 1}
+#board .cell.matchEffect.effect-star::before{animation:starHalo .48s steps(2,end) 1}
+#board .cell.matchEffect.effect-star::after{animation:starCore .48s steps(2,end) 1}
+#board .cell.matchEffect.effect-cube::before{animation:cubeHalo .95s linear 1}
+#board .cell.matchEffect.effect-cube::after{animation:cubeCore .95s linear 1}
+#board .cell.matchEffect.effect-multi::before{animation:multiHalo .62s ease-in-out 1}
+#board .cell.matchEffect.effect-multi::after{animation:multiCore .62s ease-in-out 1}
 #board .cell.rainbowSpecial{z-index:4}
-#board .cell.rainbowSpecial.effect-flame::after{animation:flameOutline 1.1s ease-in-out infinite}
-#board .cell.rainbowSpecial.effect-star::after{animation:starOutline .82s steps(2,end) infinite}
-#board .cell.rainbowSpecial.effect-cube::after{animation:cubeOutline 1.05s linear infinite}
-#board .cell.rainbowSpecial.effect-multi::after{animation:multiOutline .9s ease-in-out infinite}
+#board .cell.rainbowSpecial.effect-flame::before{animation:flameHalo 1.1s ease-in-out infinite}
+#board .cell.rainbowSpecial.effect-flame::after{animation:flameCore 1.1s ease-in-out infinite}
+#board .cell.rainbowSpecial.effect-star::before{animation:starHalo .82s steps(2,end) infinite}
+#board .cell.rainbowSpecial.effect-star::after{animation:starCore .82s steps(2,end) infinite}
+#board .cell.rainbowSpecial.effect-cube::before{animation:cubeHalo 1.05s linear infinite}
+#board .cell.rainbowSpecial.effect-cube::after{animation:cubeCore 1.05s linear infinite}
+#board .cell.rainbowSpecial.effect-multi::before{animation:multiHalo .9s ease-in-out infinite}
+#board .cell.rainbowSpecial.effect-multi::after{animation:multiCore .9s ease-in-out infinite}
 /* Reuse existing WebP bubble artwork for particles; no drawn CSS/SVG shapes. */
 .bubbleSplashPiece,.bubbleSplashHalo{position:absolute;pointer-events:none;user-select:none;object-fit:contain;will-change:transform,opacity}
 .bubbleSplashPiece{z-index:9;width:17px;height:17px;animation:bubbleSplashPop .68s cubic-bezier(.1,.7,.2,1) forwards}
