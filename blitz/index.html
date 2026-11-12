@@ -212,6 +212,14 @@ button{font:inherit;cursor:pointer;color:inherit;touch-action:manipulation}
 .boostArt img{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}
 .blitzFoot{height:31px;margin:5px 12px 0;display:flex;align-items:center;justify-content:space-between;color:#af806c;font-size:9px;font-weight:900;letter-spacing:.5px}
 
+
+/* Pack the Blitz board with the existing raster bubbles; keep the board background nearly hidden. */
+#boardShell{padding:1px;background:#f7d5bb;}
+#board{gap:0;padding:0;background:transparent;}
+#board .cell,#board .cell:nth-child(odd){background:transparent;box-shadow:none;border-radius:0;overflow:visible;}
+#board .cell img{width:112%;height:112%;max-width:none;max-height:none;object-fit:contain;transform:translate(-5.35%,-5.35%);transform-origin:center;z-index:1;}
+#board .cell.clearing img{z-index:6;}
+
 </style>
 </head>
 <body>
