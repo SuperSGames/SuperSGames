@@ -45,7 +45,7 @@ button{font:inherit;cursor:pointer;color:inherit;touch-action:manipulation}
 .cell.star img{filter:drop-shadow(0 0 4px #ed79e6)}
 .cell.cube img{filter:drop-shadow(0 0 5px #82c5f5)}
 @keyframes clear{40%{transform:scale(1.22);opacity:1;filter:brightness(1.7)}100%{opacity:0;transform:scale(.2)}}
-@keyframes fall{0%{transform:translateY(-18px);opacity:.65}100%{transform:none;opacity:1}}
+@keyframes fall{0%{transform:translateY(var(--fall-offset,-18px));opacity:.65}100%{transform:none;opacity:1}}
 .burst{position:absolute;z-index:8;pointer-events:none;font-size:19px;font-weight:1000;color:#f07889;text-shadow:1px 2px 0 #fff;animation:floatScore .85s ease-out forwards}
 @keyframes floatScore{to{transform:translateY(-60px) scale(1.2);opacity:0}}
 #banner{height:57px;margin:16px 12px 0;display:flex;align-items:center;justify-content:center;gap:9px;background:#fff;border:2px solid #f0d5ca;border-radius:17px;box-shadow:0 3px 0 #edd9c9;padding:6px 7px}
@@ -134,8 +134,11 @@ function fmt(v){return Math.round(v).toLocaleString('ko-KR')}
 function announce(text){const e=dom.toast;e.textContent=text;e.classList.remove('show');void e.offsetWidth;e.classList.add('show')}
 function audio(freq=520,dur=.07){if(!saved.sound)return;try{const Context=window.AudioContext||window.webkitAudioContext;if(!Context)return;if(!audio.ctx)audio.ctx=new Context();const ctx=audio.ctx;const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=freq;g.gain.setValueAtTime(.07,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+dur);o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+dur)}catch(_){}}
 function vibrate(ms=22){if(saved.vibrate&&navigator.vibrate)try{navigator.vibrate(ms)}catch(_){}}
-function render(dropped=false){for(let i=0;i<N;i++){
- const cell=cells[i],p=board[i];cell.className='cell'+(i===sel?' selected':'')+(hintPair?.includes(i)?' hinted':'')+(p?.special?' '+p.special:'')+(dropped?' dropped':'');cell.replaceChildren();
+function render(fallRows=null){for(let i=0;i<N;i++){
+ const cell=cells[i],p=board[i],rows=fallRows instanceof Map?(fallRows.get(i)||0):0;
+ cell.className='cell'+(i===sel?' selected':'')+(hintPair?.includes(i)?' hinted':'')+(p?.special?' '+p.special:'')+(rows>0?' dropped':'');
+ if(rows>0)cell.style.setProperty('--fall-offset',(-rows*100)+'%');else cell.style.removeProperty('--fall-offset');
+ cell.replaceChildren();
  if(!p)continue;const img=document.createElement('img');img.src=ASSETS[p.color];img.alt=TYPES[p.color]+' 블록';img.draggable=false;img.decoding='async';img.onerror=()=>{hasImgError.add(img.src);img.style.display='none';if(!cell.querySelector('.textFallback')){const t=document.createElement('strong');t.className='textFallback';t.textContent=['고양이','쥐','물고기','발','털실'][p.color];t.style.fontSize='11px';cell.append(t);}};cell.append(img);
  if(p.special){const t=document.createElement('div');t.className='overlaySymbol';t.textContent=p.special==='flame'?'✦':p.special==='star'?'✳':'★';cell.append(t)}
  if(p.multi){const t=document.createElement('div');t.className='overlaySymbol multiSymbol';t.textContent='×'+(multiplier+1);cell.append(t)}
@@ -174,8 +177,25 @@ async function settle(initial=null,prefer=-1,fromSwap=true){const myToken=token;
  if(!count)break;const now=performance.now();if(cascade===0)bonusPulse(now);gained=(gained+speedBonus)*multiplier*Math.max(1,1+cascade*.5);score+=Math.round(gained);if(removedMulti){multiplier=Math.min(8,multiplier+removedMulti);announce('배율 UP! ×'+multiplier);}const focus=prefer>=0?prefer:[...clear][0];floating('+'+fmt(gained),Math.max(0,focus));if(count>=7){vibrate(65);audio(760+Math.min(cascade,5)*110,.14)}else{vibrate(18);audio(520+Math.min(cascade,5)*85)}update();
  await pauseSleep(120);if(token!==myToken||mode==='ended')return;
  for(const i of clear)board[i]=null;for(const [i,type] of protect)if(board[i]){board[i].special=type;board[i].multi=false;}
- for(let c=0;c<W;c++){let write=H-1;for(let r=H-1;r>=0;r--){const p=board[r*W+c];if(p){board[write*W+c]=p;if(write!==r)board[r*W+c]=null;write--;}}while(write>=0)board[write--*W+c]=newTile()}
- render(true);await pauseSleep(95);if(token!==myToken||mode==='ended')return;
+ const fallRows=new Map();
+ for(let c=0;c<W;c++){
+   let write=H-1;
+   for(let r=H-1;r>=0;r--){
+     const p=board[r*W+c];
+     if(!p)continue;
+     const destination=write*W+c;
+     board[destination]=p;
+     if(write!==r){board[r*W+c]=null;fallRows.set(destination,write-r);}
+     write--;
+   }
+   while(write>=0){
+     const destination=write*W+c;
+     board[destination]=newTile();
+     fallRows.set(destination,write+1);
+     write--;
+   }
+ }
+ render(fallRows);await pauseSleep(95);if(token!==myToken||mode==='ended')return;
  cascade++;fromSwap=false;prefer=-1;pending=null;
  if(count>=12&&multiplier<8){const options=board.map((p,i)=>p.special||p.multi?-1:i).filter(i=>i>=0);if(options.length)board[options[pick(options.length)]].multi=true}
  if(cascade>25){board=createBoard();break;}
