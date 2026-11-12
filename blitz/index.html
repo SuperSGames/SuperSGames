@@ -42,17 +42,18 @@ button{font:inherit;cursor:pointer;color:inherit;touch-action:manipulation}
 .cell img{position:relative;width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;user-select:none}
 .cell .overlaySymbol{position:absolute;z-index:2;inset:auto 0 3px;text-align:center;font-size:22px;font-weight:1000;color:white;text-shadow:0 1px 4px #68414b,0 0 5px #7b4a58;pointer-events:none;line-height:1}
 .cell .multiSymbol{background:#f5e6ffdc;color:#8b4cb6;text-shadow:0 1px #fff;border-radius:10px;border:2px solid #cc9ced;inset:2px 3px auto auto;padding:1px 3px;font-size:13px;line-height:1.1}
-.cell.flame img{filter:drop-shadow(0 0 3px #ff794a)}
-.cell.star img{filter:drop-shadow(0 0 4px #ed79e6)}
-.cell.cube img{filter:drop-shadow(0 0 5px #82c5f5)}
+.cell.flame img{filter:none}
+.cell.star img{filter:none}
+.cell.cube img{filter:none}
 /* Matching original bubble squish-pop motion, using the existing raster art. */
 @keyframes bubbleBang{0%{transform:scale(1)}38%{transform:scale(1.3,.82)}65%{transform:scale(.88,1.27)}100%{transform:scale(1.5);opacity:0}}
 @keyframes bubbleJelly{0%{filter:brightness(1)}45%{filter:brightness(1.5) saturate(1.5)}100%{filter:brightness(2);opacity:0}}
-/* Strong outer glow on the raster bubble itself; preserve the bubble's original color. */
-@keyframes bubbleFlameGlow{0%,100%{filter:drop-shadow(0 0 3px #fff8d6) drop-shadow(0 0 8px #ff8a4c) drop-shadow(0 0 15px #ff4f26)}50%{filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 12px #ffcf72) drop-shadow(0 0 20px #ff5b2f)}}
-@keyframes bubbleStarGlow{0%,100%{filter:drop-shadow(0 0 3px #e7fbff) drop-shadow(0 0 8px #63dcff) drop-shadow(0 0 15px #178dff)}50%{filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 12px #a9f2ff) drop-shadow(0 0 20px #238cff)}}
-@keyframes bubbleCubeGlow{0%{filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 9px #ff63bb)}25%{filter:drop-shadow(0 0 4px #fffbd0) drop-shadow(0 0 12px #ffd35e)}50%{filter:drop-shadow(0 0 4px #eaffff) drop-shadow(0 0 14px #45d9ff)}75%{filter:drop-shadow(0 0 4px #f7ecff) drop-shadow(0 0 12px #a16bff)}100%{filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 9px #ff63bb)}}
-@keyframes bubbleMultiGlow{0%,100%{filter:drop-shadow(0 0 3px #fff7c2) drop-shadow(0 0 9px #ffb52e)}50%{filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 16px #ffe15e)}}
+/* Keep the indicator on the bubble itself: bright internal light with only a tight edge tint. */
+@keyframes bubbleFlameGlow{0%,100%{filter:brightness(1.18) saturate(1.18) drop-shadow(0 0 1px #fff8d6) drop-shadow(0 0 2px #ff8a4c)}50%{filter:brightness(1.58) saturate(1.42) drop-shadow(0 0 2px #fff) drop-shadow(0 0 3px #ff7a32)}}
+@keyframes bubbleStarGlow{0%,100%{filter:brightness(1.18) saturate(1.18) drop-shadow(0 0 1px #e7fbff) drop-shadow(0 0 2px #63dcff)}50%{filter:brightness(1.58) saturate(1.42) drop-shadow(0 0 2px #fff) drop-shadow(0 0 3px #238cff)}}
+@keyframes bubbleCubeGlow{0%{filter:brightness(1.22) saturate(1.22) drop-shadow(0 0 1px #fff) drop-shadow(0 0 2px #ff63bb)}25%{filter:brightness(1.48) saturate(1.38) drop-shadow(0 0 2px #fffbd0) drop-shadow(0 0 3px #ffd35e)}50%{filter:brightness(1.52) saturate(1.4) drop-shadow(0 0 2px #eaffff) drop-shadow(0 0 3px #45d9ff)}75%{filter:brightness(1.48) saturate(1.38) drop-shadow(0 0 2px #f7ecff) drop-shadow(0 0 3px #a16bff)}100%{filter:brightness(1.22) saturate(1.22) drop-shadow(0 0 1px #fff) drop-shadow(0 0 2px #ff63bb)}}
+@keyframes bubbleMultiGlow{0%,100%{filter:brightness(1.22) saturate(1.2) drop-shadow(0 0 1px #fff7c2) drop-shadow(0 0 2px #ffb52e)}50%{filter:brightness(1.6) saturate(1.42) drop-shadow(0 0 2px #fff) drop-shadow(0 0 3px #ffe15e)}}
+#board .cell.flame img,#board .cell.star img,#board .cell.cube img{filter:none}
 #board .cell.matchEffect{z-index:7}
 #board .cell.matchEffect.effect-flame img{animation:bubbleFlameGlow .72s ease-in-out 1}
 #board .cell.matchEffect.effect-star img{animation:bubbleStarGlow .72s ease-in-out 1}
@@ -229,8 +230,8 @@ button{font:inherit;cursor:pointer;color:inherit;touch-action:manipulation}
 
 
 /* Pack the Blitz board with the existing raster bubbles; keep the board background nearly hidden. */
-#boardShell{padding:1px;background:#fffaf4;}
-#board{gap:0;padding:0;background:#fffefa;}
+#boardShell{padding:1px;background:#fff;}
+#board{gap:0;padding:0;background:#fff;}
 #board .cell,#board .cell:nth-child(odd){background:transparent;box-shadow:none;border-radius:0;overflow:hidden;}
 #board .cell img{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;transform:none;transform-origin:center;z-index:1;}
 #board .cell.clearing img{z-index:6;}
