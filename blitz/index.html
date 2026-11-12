@@ -48,22 +48,22 @@ button{font:inherit;cursor:pointer;color:inherit;touch-action:manipulation}
 /* Matching original bubble squish-pop motion, using the existing raster art. */
 @keyframes bubbleBang{0%{transform:scale(1)}38%{transform:scale(1.3,.82)}65%{transform:scale(.88,1.27)}100%{transform:scale(1.5);opacity:0}}
 @keyframes bubbleJelly{0%{filter:brightness(1)}45%{filter:brightness(1.5) saturate(1.5)}100%{filter:brightness(2);opacity:0}}
-/* Keep the indicator on the bubble itself: bright internal light with only a tight edge tint. */
-@keyframes bubbleFlameGlow{0%,100%{filter:brightness(1.18) saturate(1.18) drop-shadow(0 0 1px #fff8d6) drop-shadow(0 0 2px #ff8a4c)}50%{filter:brightness(1.58) saturate(1.42) drop-shadow(0 0 2px #fff) drop-shadow(0 0 3px #ff7a32)}}
-@keyframes bubbleStarGlow{0%,100%{filter:brightness(1.18) saturate(1.18) drop-shadow(0 0 1px #e7fbff) drop-shadow(0 0 2px #63dcff)}50%{filter:brightness(1.58) saturate(1.42) drop-shadow(0 0 2px #fff) drop-shadow(0 0 3px #238cff)}}
-@keyframes bubbleCubeGlow{0%{filter:brightness(1.22) saturate(1.22) drop-shadow(0 0 1px #fff) drop-shadow(0 0 2px #ff63bb)}25%{filter:brightness(1.48) saturate(1.38) drop-shadow(0 0 2px #fffbd0) drop-shadow(0 0 3px #ffd35e)}50%{filter:brightness(1.52) saturate(1.4) drop-shadow(0 0 2px #eaffff) drop-shadow(0 0 3px #45d9ff)}75%{filter:brightness(1.48) saturate(1.38) drop-shadow(0 0 2px #f7ecff) drop-shadow(0 0 3px #a16bff)}100%{filter:brightness(1.22) saturate(1.22) drop-shadow(0 0 1px #fff) drop-shadow(0 0 2px #ff63bb)}}
-@keyframes bubbleMultiGlow{0%,100%{filter:brightness(1.22) saturate(1.2) drop-shadow(0 0 1px #fff7c2) drop-shadow(0 0 2px #ffb52e)}50%{filter:brightness(1.6) saturate(1.42) drop-shadow(0 0 2px #fff) drop-shadow(0 0 3px #ffe15e)}}
+/* Each special effect has its own color, brightness pulse, and rhythm; the glow stays tight to the bubble. */
+@keyframes bubbleFlameGlow{0%,100%{filter:brightness(1.12) saturate(1.1) contrast(1.03) drop-shadow(0 0 1px #fff3c4) drop-shadow(0 0 3px #ff5a24)}35%{filter:brightness(1.72) saturate(1.75) contrast(1.15) drop-shadow(0 0 2px #fff) drop-shadow(0 0 4px #ff3217)}65%{filter:brightness(1.28) saturate(1.35) drop-shadow(0 0 1px #ffd778) drop-shadow(0 0 3px #ff6a1f)}}
+@keyframes bubbleStarGlow{0%,100%{filter:brightness(1.1) saturate(1.25) contrast(1.06) drop-shadow(0 0 1px #e8ffff) drop-shadow(0 0 3px #00a9ff)}18%,34%{filter:brightness(2) saturate(1.05) contrast(1.3) drop-shadow(0 0 2px #fff) drop-shadow(0 0 4px #24d8ff)}52%{filter:brightness(1.28) saturate(1.55) drop-shadow(0 0 1px #a8f5ff) drop-shadow(0 0 3px #147cff)}}
+@keyframes bubbleCubeGlow{0%{filter:brightness(1.2) saturate(1.25) drop-shadow(0 0 1px #fff) drop-shadow(0 0 3px #ff4db8)}25%{filter:brightness(1.78) saturate(1.65) drop-shadow(0 0 2px #fffbd0) drop-shadow(0 0 4px #ffc928)}50%{filter:brightness(1.82) saturate(1.7) drop-shadow(0 0 2px #eaffff) drop-shadow(0 0 4px #10cfff)}75%{filter:brightness(1.75) saturate(1.62) drop-shadow(0 0 2px #f7ecff) drop-shadow(0 0 4px #965cff)}100%{filter:brightness(1.2) saturate(1.25) drop-shadow(0 0 1px #fff) drop-shadow(0 0 3px #ff4db8)}}
+@keyframes bubbleMultiGlow{0%,100%{filter:brightness(1.18) saturate(1.18) contrast(1.04) drop-shadow(0 0 1px #fff7c2) drop-shadow(0 0 3px #ffae16)}45%{filter:brightness(2.05) saturate(1.85) contrast(1.2) drop-shadow(0 0 2px #fff) drop-shadow(0 0 4px #ffe52e)}72%{filter:brightness(1.4) saturate(1.4) drop-shadow(0 0 1px #ffeaa0) drop-shadow(0 0 3px #ff9e00)}}
 #board .cell.flame img,#board .cell.star img,#board .cell.cube img{filter:none}
 #board .cell.matchEffect{z-index:7}
-#board .cell.matchEffect.effect-flame img{animation:bubbleFlameGlow .72s ease-in-out 1}
-#board .cell.matchEffect.effect-star img{animation:bubbleStarGlow .72s ease-in-out 1}
-#board .cell.matchEffect.effect-cube img{animation:bubbleCubeGlow .72s linear 1}
-#board .cell.matchEffect.effect-multi img{animation:bubbleMultiGlow .72s ease-in-out 1}
+#board .cell.matchEffect.effect-flame img{animation:bubbleFlameGlow .68s ease-in-out 1}
+#board .cell.matchEffect.effect-star img{animation:bubbleStarGlow .48s steps(2,end) 1}
+#board .cell.matchEffect.effect-cube img{animation:bubbleCubeGlow .95s linear 1}
+#board .cell.matchEffect.effect-multi img{animation:bubbleMultiGlow .62s ease-in-out 1}
 #board .cell.rainbowSpecial{z-index:4}
-#board .cell.rainbowSpecial.effect-flame img{animation:bubbleFlameGlow 1.35s linear infinite}
-#board .cell.rainbowSpecial.effect-star img{animation:bubbleStarGlow 1.35s linear infinite}
-#board .cell.rainbowSpecial.effect-cube img{animation:bubbleCubeGlow 1.35s linear infinite}
-#board .cell.rainbowSpecial.effect-multi img{animation:bubbleMultiGlow 1.35s ease-in-out infinite}
+#board .cell.rainbowSpecial.effect-flame img{animation:bubbleFlameGlow 1.1s ease-in-out infinite}
+#board .cell.rainbowSpecial.effect-star img{animation:bubbleStarGlow .82s steps(2,end) infinite}
+#board .cell.rainbowSpecial.effect-cube img{animation:bubbleCubeGlow 1.05s linear infinite}
+#board .cell.rainbowSpecial.effect-multi img{animation:bubbleMultiGlow .9s ease-in-out infinite}
 /* Reuse existing WebP bubble artwork for particles; no drawn CSS/SVG shapes. */
 .bubbleSplashPiece,.bubbleSplashHalo{position:absolute;pointer-events:none;user-select:none;object-fit:contain;will-change:transform,opacity}
 .bubbleSplashPiece{z-index:9;width:17px;height:17px;animation:bubbleSplashPop .68s cubic-bezier(.1,.7,.2,1) forwards}
