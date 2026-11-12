@@ -48,21 +48,21 @@ button{font:inherit;cursor:pointer;color:inherit;touch-action:manipulation}
 /* Matching original bubble squish-pop motion, using the existing raster art. */
 @keyframes bubbleBang{0%{transform:scale(1)}38%{transform:scale(1.3,.82)}65%{transform:scale(.88,1.27)}100%{transform:scale(1.5);opacity:0}}
 @keyframes bubbleJelly{0%{filter:brightness(1)}45%{filter:brightness(1.5) saturate(1.5)}100%{filter:brightness(2);opacity:0}}
-/* Effect-specific outer glow; the raster bubble colors stay unchanged. */
-@keyframes effectFlameGlow{0%,100%{box-shadow:inset 0 0 0 3px #ffb45b,0 0 8px #ff7a45}50%{box-shadow:inset 0 0 0 3px #ffe0a0,0 0 16px #ff5b2f}}
-@keyframes effectStarGlow{0%,100%{box-shadow:inset 0 0 0 3px #7be7ff,0 0 8px #39bfff}50%{box-shadow:inset 0 0 0 3px #d0f7ff,0 0 16px #37a7ff}}
-@keyframes effectCubeGlow{0%{box-shadow:inset 0 0 0 3px #ff8bd6,0 0 9px #ff63bb}25%{box-shadow:inset 0 0 0 3px #fff09a,0 0 12px #ffd35e}50%{box-shadow:inset 0 0 0 3px #8ff5e3,0 0 14px #45d9ff}75%{box-shadow:inset 0 0 0 3px #d0a4ff,0 0 12px #a16bff}100%{box-shadow:inset 0 0 0 3px #ff8bd6,0 0 9px #ff63bb}}
-@keyframes effectMultiGlow{0%,100%{box-shadow:inset 0 0 0 3px #ffd45f,0 0 9px #ffb52e}50%{box-shadow:inset 0 0 0 3px #fff3a6,0 0 16px #ffe15e}}
+/* Strong outer glow on the raster bubble itself; preserve the bubble's original color. */
+@keyframes bubbleFlameGlow{0%,100%{filter:drop-shadow(0 0 3px #fff8d6) drop-shadow(0 0 8px #ff8a4c) drop-shadow(0 0 15px #ff4f26)}50%{filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 12px #ffcf72) drop-shadow(0 0 20px #ff5b2f)}}
+@keyframes bubbleStarGlow{0%,100%{filter:drop-shadow(0 0 3px #e7fbff) drop-shadow(0 0 8px #63dcff) drop-shadow(0 0 15px #178dff)}50%{filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 12px #a9f2ff) drop-shadow(0 0 20px #238cff)}}
+@keyframes bubbleCubeGlow{0%{filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 9px #ff63bb)}25%{filter:drop-shadow(0 0 4px #fffbd0) drop-shadow(0 0 12px #ffd35e)}50%{filter:drop-shadow(0 0 4px #eaffff) drop-shadow(0 0 14px #45d9ff)}75%{filter:drop-shadow(0 0 4px #f7ecff) drop-shadow(0 0 12px #a16bff)}100%{filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 9px #ff63bb)}}
+@keyframes bubbleMultiGlow{0%,100%{filter:drop-shadow(0 0 3px #fff7c2) drop-shadow(0 0 9px #ffb52e)}50%{filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 16px #ffe15e)}}
 #board .cell.matchEffect{z-index:7}
-#board .cell.matchEffect.effect-flame{animation:effectFlameGlow .72s ease-in-out 1}
-#board .cell.matchEffect.effect-star{animation:effectStarGlow .72s ease-in-out 1}
-#board .cell.matchEffect.effect-cube{animation:effectCubeGlow .72s linear 1}
-#board .cell.matchEffect.effect-multi{animation:effectMultiGlow .72s ease-in-out 1}
+#board .cell.matchEffect.effect-flame img{animation:bubbleFlameGlow .72s ease-in-out 1}
+#board .cell.matchEffect.effect-star img{animation:bubbleStarGlow .72s ease-in-out 1}
+#board .cell.matchEffect.effect-cube img{animation:bubbleCubeGlow .72s linear 1}
+#board .cell.matchEffect.effect-multi img{animation:bubbleMultiGlow .72s ease-in-out 1}
 #board .cell.rainbowSpecial{z-index:4}
-#board .cell.rainbowSpecial.effect-flame{animation:effectFlameGlow 1.35s linear infinite}
-#board .cell.rainbowSpecial.effect-star{animation:effectStarGlow 1.35s linear infinite}
-#board .cell.rainbowSpecial.effect-cube{animation:effectCubeGlow 1.35s linear infinite}
-#board .cell.rainbowSpecial.effect-multi{animation:effectMultiGlow 1.35s linear infinite}
+#board .cell.rainbowSpecial.effect-flame img{animation:bubbleFlameGlow 1.35s linear infinite}
+#board .cell.rainbowSpecial.effect-star img{animation:bubbleStarGlow 1.35s linear infinite}
+#board .cell.rainbowSpecial.effect-cube img{animation:bubbleCubeGlow 1.35s linear infinite}
+#board .cell.rainbowSpecial.effect-multi img{animation:bubbleMultiGlow 1.35s ease-in-out infinite}
 /* Reuse existing WebP bubble artwork for particles; no drawn CSS/SVG shapes. */
 .bubbleSplashPiece,.bubbleSplashHalo{position:absolute;pointer-events:none;user-select:none;object-fit:contain;will-change:transform,opacity}
 .bubbleSplashPiece{z-index:9;width:17px;height:17px;animation:bubbleSplashPop .68s cubic-bezier(.1,.7,.2,1) forwards}
@@ -229,8 +229,8 @@ button{font:inherit;cursor:pointer;color:inherit;touch-action:manipulation}
 
 
 /* Pack the Blitz board with the existing raster bubbles; keep the board background nearly hidden. */
-#boardShell{padding:1px;background:#f7d5bb;}
-#board{gap:0;padding:0;background:transparent;}
+#boardShell{padding:1px;background:#fffaf4;}
+#board{gap:0;padding:0;background:#fffefa;}
 #board .cell,#board .cell:nth-child(odd){background:transparent;box-shadow:none;border-radius:0;overflow:hidden;}
 #board .cell img{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;transform:none;transform-origin:center;z-index:1;}
 #board .cell.clearing img{z-index:6;}
