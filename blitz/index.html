@@ -260,22 +260,28 @@ async function settle(initial=null,prefer=-1,fromSwap=true){const myToken=token;
   gained+=(p.special?180:100);
  }
  if(!count)break;const now=performance.now();if(cascade===0)bonusPulse(now);gained=(gained+speedBonus)*multiplier*Math.max(1,1+cascade*.5);score+=Math.round(gained);if(removedMulti){multiplier=Math.min(8,multiplier+removedMulti);announce('배율 UP! ×'+multiplier);}const focus=prefer>=0?prefer:[...clear][0];floating('+'+fmt(gained),Math.max(0,focus));
- // Same squash-pop, colored splash and rising pop word; no coin-flying animation.
- bubbleSplash(popped,count,cascade);
- const popStep=count>=7?24:32;
- const maxSteps=12;
- for(let n=0;n<popped.length;n++){
-  const index=popped[n],delay=Math.min(n,maxSteps-1)*popStep;
-  setTimeout(()=>{
-   if(token!==myToken||mode==='ended')return;
-   cells[index].classList.add('clearing');
-   // Match the bubble game's per-pop pitch changes and tactile feedback.
-   if(n<maxSteps)playBubblePop(count+Math.min(cascade,5)+n*.15);
-   bubblePopHaptic(count>=7);
-  },delay);
+ // Use the exact original pop sequence: group-by-group, one tile at a time.
+ const seenPops=new Set();
+ const popGroups=[];
+ for(const match of groups){
+  const group=[...match.ids].filter(i=>clear.has(i)&&board[i]&&!seenPops.has(i));
+  if(group.length){for(const i of group)seenPops.add(i);popGroups.push(group);}
  }
+ const extraPops=popped.filter(i=>!seenPops.has(i));
+ if(extraPops.length)popGroups.push(extraPops);
+ for(const group of popGroups)bubbleSplash(group,group.length,cascade);
  update();
- await pauseSleep(350+(Math.min(popped.length,maxSteps)-1)*popStep);
+ for(const group of popGroups){
+  for(let n=0;n<group.length;n++){
+   if(token!==myToken||mode==='ended')return;
+   const index=group[n];
+   cells[index].classList.add('clearing');
+   bubblePopHaptic(group.length>=7);
+   playBubblePop(group.length+(cascade+1)+n*.15);
+   await pauseSleep(group.length>=7?34:42);
+  }
+ }
+ await pauseSleep(170);
  if(token!==myToken||mode==='ended')return;
  for(const i of clear)board[i]=null;for(const [i,type] of protect)if(board[i]){board[i].special=type;board[i].multi=false;}
  const fallRows=new Map();
