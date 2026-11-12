@@ -8,16 +8,16 @@
 <style>
 :root {font-family:system-ui,-apple-system,'Noto Sans KR','Malgun Gothic',sans-serif;color:#634244;font-synthesis:none}
 * {box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;height:100%;overscroll-behavior:none;overflow:hidden;background:#f5e9de}
+html,body{margin:0;height:100%;overscroll-behavior:none;overflow:hidden;overflow-anchor:none;background:#f5e9de}
 button{font:inherit;cursor:pointer;color:inherit;touch-action:manipulation}
-#gameViewport {position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
-#game {position:absolute;width:414px;height:896px;transform-origin:top left;overflow:hidden;background:#fff7ef;box-shadow:0 0 30px #956e7030}
-.masthead{height:111px;padding:27px 16px 8px;display:flex;align-items:flex-end;justify-content:space-between;background:#fff4e8;border-bottom:2px solid #f0d8c8}
+#gameViewport {position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;overflow-anchor:none}
+#game {position:absolute;width:414px;height:896px;transform-origin:top left;overflow:hidden;overflow-anchor:none;background:#fff7ef;box-shadow:0 0 30px #956e7030}
+.masthead{height:102px;padding:24px 16px 8px;display:flex;align-items:flex-end;justify-content:space-between;background:#fff4e8;border-bottom:2px solid #f0d8c8}
 .brandTitle{font-size:31px;letter-spacing:-1.7px;font-weight:1000;line-height:1.05;color:#db647f;text-shadow:0 2px 0 #fff}
 .brandTag{font-size:12px;font-weight:900;color:#aa8791;letter-spacing:1px;padding-left:3px;margin-top:5px}
 .iconButton{border:2px solid #f0ced2;background:#fff;min-width:53px;height:44px;border-radius:13px;box-shadow:0 3px 0 #e9cbd1;font-size:15px;font-weight:950;color:#a36c82}
 .headerButtons{display:flex;gap:7px;margin-bottom:4px}
-.topStats{height:98px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:12px 14px 7px}
+.topStats{height:90px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:12px 14px 7px}
 .stat{border:2px solid #efd6c7;background:#fff;box-shadow:0 3px 0 #f0dcca;border-radius:15px;text-align:center;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1px}
 .stat .key{color:#af8d81;font-weight:900;font-size:14px}
 .stat .num{font-weight:1000;font-size:25px;letter-spacing:-1px;color:#a7676f;font-variant-numeric:tabular-nums}
@@ -30,8 +30,8 @@ button{font:inherit;cursor:pointer;color:inherit;touch-action:manipulation}
 .track{flex:1;height:13px;border-radius:9px;background:#ecd7cd;border:2px solid #e3bbaf;overflow:hidden}
 .trackFill{height:100%;width:100%;background:#e9a96b;transition:width .1s linear}
 #statusText{font-size:12px;font-weight:900;min-width:42px;text-align:right;color:#ae7785}
-.boardShell{width:396px;height:400px;padding:6px;margin:0 auto;border:3px solid #dcaea5;border-radius:17px;background:#ffe6cf;box-shadow:0 6px 0 #f1d8c2, 0 8px 14px #b88d7b33;position:relative}
-#board{width:100%;height:100%;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));grid-template-rows:repeat(8,minmax(0,1fr));touch-action:none;user-select:none;border-radius:10px;overflow:hidden;background:#f7d5bb;position:relative}
+.boardShell{width:410px;height:410px;padding:2px;margin:0 auto;border:2px solid #dcaea5;border-radius:17px;background:#ffe6cf;box-shadow:0 6px 0 #f1d8c2, 0 8px 14px #b88d7b33;position:relative}
+#board{width:100%;height:100%;display:grid;overflow-anchor:none;grid-template-columns:repeat(8,minmax(0,1fr));grid-template-rows:repeat(8,minmax(0,1fr));touch-action:none;user-select:none;border-radius:10px;overflow:hidden;background:#f7d5bb;position:relative}
 .cell{position:relative;display:grid;place-items:center;min-width:0;min-height:0;background:#ffe8d5;transition:background .08s}
 .cell:nth-child(odd){background:#fae0c9}
 .cell.selected{background:#ffcf83!important;box-shadow:inset 0 0 0 3px #fff3ba;z-index:3}
@@ -106,8 +106,28 @@ const pick=n=>Math.floor(Math.random()*n);
 const clone=o=>({...o});
 const pauseSleep=ms=>new Promise(r=>setTimeout(r,ms));
 const hasImgError=new Set();
-function fit(){const vw=innerWidth,vh=innerHeight,sx=Math.min(1,vw/414),sy=Math.min(sx,vh/896);dom.game.style.transform=`scale(${sx},${sy})`;dom.game.style.left=((vw-414*sx)/2)+'px';dom.game.style.top=((vh-896*sy)/2)+'px';}
-addEventListener('resize',fit);addEventListener('orientationchange',fit);addEventListener('pageshow',fit);if(window.visualViewport)visualViewport.addEventListener('resize',fit);fit();requestAnimationFrame(fit);requestAnimationFrame(()=>requestAnimationFrame(fit));
+// Keep the game frame stationary while the mobile browser shows/hides its address bar.
+// A width/orientation change is an actual layout change and must still be handled.
+let fittedWidth=0,fittedHeight=0,fittedOrientation='';
+function fit(force=false){
+ const vw=innerWidth,vh=innerHeight;
+ const orientation=vw>vh?'landscape':'portrait';
+ const changedWidth=Math.abs(vw-fittedWidth)>1;
+ const changedOrientation=orientation!==fittedOrientation;
+ const inRound=mode==='running'||mode==='paused';
+ if(force||!fittedWidth||changedWidth||changedOrientation||!inRound){
+   fittedWidth=vw;fittedHeight=vh;fittedOrientation=orientation;
+ }
+ const sx=Math.min(1,fittedWidth/414),sy=Math.min(sx,fittedHeight/896);
+ dom.game.style.transform=`scale(${sx},${sy})`;
+ dom.game.style.left=((fittedWidth-414*sx)/2)+'px';
+ dom.game.style.top=((fittedHeight-896*sy)/2)+'px';
+}
+addEventListener('resize',()=>fit());
+addEventListener('orientationchange',()=>fit(true));
+addEventListener('pageshow',()=>fit(true));
+if(window.visualViewport)visualViewport.addEventListener('resize',()=>fit());
+fit(true);requestAnimationFrame(()=>fit(true));requestAnimationFrame(()=>requestAnimationFrame(()=>fit(true)));
 function point(i){return [Math.floor(i/W),i%W]}
 function newTile(color=pick(TYPES.length)){return {color,special:null,multi:false}}
 function fmt(v){return Math.round(v).toLocaleString('ko-KR')}
