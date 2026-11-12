@@ -36,7 +36,8 @@ button{font:inherit;cursor:pointer;color:inherit;touch-action:manipulation}
 .cell:nth-child(odd){background:#fae0c9}
 .cell.selected{background:#ffcf83!important;box-shadow:inset 0 0 0 3px #fff3ba;z-index:3}
 .cell.hinted{background:#fff5a2!important}
-.cell.clearing{animation:clear .19s ease-out forwards}
+.cell.clearing{z-index:6;animation:bubbleBang .34s cubic-bezier(.15,.8,.2,1) forwards}
+.cell.clearing img{animation:bubbleJelly .34s ease-out forwards}
 .cell.dropped img{animation:fall .18s ease-out}
 .cell img{position:relative;width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;user-select:none}
 .cell .overlaySymbol{position:absolute;z-index:2;inset:auto 0 3px;text-align:center;font-size:22px;font-weight:1000;color:white;text-shadow:0 1px 4px #68414b,0 0 5px #7b4a58;pointer-events:none;line-height:1}
@@ -44,7 +45,17 @@ button{font:inherit;cursor:pointer;color:inherit;touch-action:manipulation}
 .cell.flame img{filter:drop-shadow(0 0 3px #ff794a)}
 .cell.star img{filter:drop-shadow(0 0 4px #ed79e6)}
 .cell.cube img{filter:drop-shadow(0 0 5px #82c5f5)}
-@keyframes clear{40%{transform:scale(1.22);opacity:1;filter:brightness(1.7)}100%{opacity:0;transform:scale(.2)}}
+/* Matching original bubble squish-pop motion, using the existing raster art. */
+@keyframes bubbleBang{0%{transform:scale(1)}38%{transform:scale(1.3,.82)}65%{transform:scale(.88,1.27)}100%{transform:scale(1.5);opacity:0}}
+@keyframes bubbleJelly{0%{filter:brightness(1)}45%{filter:brightness(1.5) saturate(1.5)}100%{filter:brightness(2);opacity:0}}
+/* Reuse existing WebP bubble artwork for particles; no drawn CSS/SVG shapes. */
+.bubbleSplashPiece,.bubbleSplashHalo{position:absolute;pointer-events:none;user-select:none;object-fit:contain;will-change:transform,opacity}
+.bubbleSplashPiece{z-index:9;width:17px;height:17px;animation:bubbleSplashPop .68s cubic-bezier(.1,.7,.2,1) forwards}
+.bubbleSplashHalo{z-index:8;width:35px;height:35px;animation:bubbleSplashHalo .61s ease-out forwards}
+.popWord{position:absolute;z-index:10;color:#fff;font-size:23px;font-weight:1000;text-shadow:0 3px 7px #d34c72,-2px 0 #ff6e98,2px 0 #68cfff;pointer-events:none;animation:popWordFly .72s ease-out forwards;white-space:nowrap}
+@keyframes bubbleSplashPop{0%{transform:translate(-50%,-50%) scale(.3);opacity:.95}50%{opacity:.9}100%{transform:translate(calc(-50% + var(--sx)),calc(-50% + var(--sy))) scale(1);opacity:0}}
+@keyframes bubbleSplashHalo{0%{transform:translate(-50%,-50%) scale(.45);opacity:.65;filter:brightness(1.5)}100%{transform:translate(-50%,-50%) scale(2.4);opacity:0;filter:brightness(1.8)}}
+@keyframes popWordFly{0%{transform:translate(-50%,-50%) scale(.25) rotate(-8deg);opacity:0}42%{transform:translate(-50%,-50%) scale(1.5) rotate(4deg);opacity:1}100%{transform:translate(-50%,calc(-50% - 48px)) scale(.9);opacity:0}}
 @keyframes fall{0%{transform:translateY(var(--fall-offset,-18px));opacity:.65}100%{transform:none;opacity:1}}
 .burst{position:absolute;z-index:8;pointer-events:none;font-size:19px;font-weight:1000;color:#f07889;text-shadow:1px 2px 0 #fff;animation:floatScore .85s ease-out forwards}
 @keyframes floatScore{to{transform:translateY(-60px) scale(1.2);opacity:0}}
@@ -134,6 +145,73 @@ function fmt(v){return Math.round(v).toLocaleString('ko-KR')}
 function announce(text){const e=dom.toast;e.textContent=text;e.classList.remove('show');void e.offsetWidth;e.classList.add('show')}
 function audio(freq=520,dur=.07){if(!saved.sound)return;try{const Context=window.AudioContext||window.webkitAudioContext;if(!Context)return;if(!audio.ctx)audio.ctx=new Context();const ctx=audio.ctx;const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=freq;g.gain.setValueAtTime(.07,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+dur);o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+dur)}catch(_){}}
 function vibrate(ms=22){if(saved.vibrate&&navigator.vibrate)try{navigator.vibrate(ms)}catch(_){}}
+let lastBubblePopHaptic=-Infinity;
+function bubblePopHaptic(big=false){
+ if(!saved.vibrate||!navigator.vibrate)return;
+ const now=performance.now();
+ if(now-lastBubblePopHaptic<80)return;
+ lastBubblePopHaptic=now;
+ try{navigator.vibrate(big?[24,25,24]:[16,24,16])}catch(_){}
+}
+// Use the original game's pitched sine-wave pop sound and envelope.
+function playBubblePop(power=3){
+ if(!saved.sound)return;
+ try{
+  const A=window.AudioContext||window.webkitAudioContext;
+  if(!A)return;
+  const ac=audio.ctx||(audio.ctx=new A());
+  if(ac.state==='suspended')void ac.resume().catch(()=>{});
+  const o=ac.createOscillator(),g=ac.createGain();
+  o.type='sine';
+  o.frequency.setValueAtTime(320+power*45,ac.currentTime);
+  o.frequency.exponentialRampToValueAtTime(90,ac.currentTime+.12);
+  g.gain.setValueAtTime(.084,ac.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.14);
+  o.connect(g);g.connect(ac.destination);
+  o.start();o.stop(ac.currentTime+.15);
+ }catch(_){}
+}
+// Pop fragments use the existing bubble pictures, including their transparent pixels.
+function bubbleSplash(indices,comboCount,cascade=0){
+ const intensity=comboCount>=7?1.45:comboCount>=5?1.18:1;
+ const shown=indices.slice(0,24);
+ for(const idx of shown){
+  const p=board[idx];if(!p)continue;
+  const row=Math.floor(idx/W),col=idx%W;
+  const x=(col+.5)*100/W+'%',y=(row+.5)*100/H+'%';
+  const fragmentCount=comboCount>=7?6:4;
+  for(let k=0;k<fragmentCount;k++){
+   const part=document.createElement('img');
+   part.src=ASSETS[p.color];part.alt='';
+   part.setAttribute('aria-hidden','true');
+   part.className='bubbleSplashPiece';
+   part.style.left=x;part.style.top=y;
+   const angle=Math.random()*Math.PI*2;
+   const dist=(24+Math.random()*54)*intensity;
+   part.style.setProperty('--sx',(Math.cos(angle)*dist)+'px');
+   part.style.setProperty('--sy',(Math.sin(angle)*dist+12)+'px');
+   dom.board.append(part);
+   setTimeout(()=>part.remove(),720);
+  }
+  const halo=document.createElement('img');
+  halo.src=ASSETS[p.color];halo.alt='';
+  halo.setAttribute('aria-hidden','true');
+  halo.className='bubbleSplashHalo';
+  halo.style.left=x;halo.style.top=y;
+  dom.board.append(halo);
+  setTimeout(()=>halo.remove(),650);
+ }
+ const center=shown[Math.floor(shown.length/2)];
+ if(center!=null){
+  const word=document.createElement('b');
+  word.className='popWord';
+  word.textContent=comboCount>=7?'파파빠방!':comboCount>=5?'빠방!':'뽁뽁!';
+  word.style.left=(Math.floor(center%W)+.5)*100/W+'%';
+  word.style.top=(Math.floor(center/W)+.5)*100/H+'%';
+  dom.board.append(word);
+  setTimeout(()=>word.remove(),740);
+ }
+}
 function render(fallRows=null){for(let i=0;i<N;i++){
  const cell=cells[i],p=board[i],rows=fallRows instanceof Map?(fallRows.get(i)||0):0;
  cell.className='cell'+(i===sel?' selected':'')+(hintPair?.includes(i)?' hinted':'')+(p?.special?' '+p.special:'')+(rows>0?' dropped':'');
@@ -173,9 +251,32 @@ async function settle(initial=null,prefer=-1,fromSwap=true){const myToken=token;
  // Expand special block reactions until none remain.
  const visited=new Set(),queue=[...clear];while(queue.length){const idx=queue.pop();if(visited.has(idx)||!board[idx])continue;visited.add(idx);const p=board[idx];if(p.special==='flame'){const [r,c]=point(idx);for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const nr=r+dr,nc=c+dc;if(nr>=0&&nr<H&&nc>=0&&nc<W){const j=nr*W+nc;if(!clear.has(j)){clear.add(j);queue.push(j)}}}}else if(p.special==='star'){const [r,c]=point(idx);for(let j=0;j<N;j++)if(Math.floor(j/W)===r||j%W===c){if(!clear.has(j)){clear.add(j);queue.push(j)}}}else if(p.special==='cube'){const t=pick(TYPES.length);for(let j=0;j<N;j++)if(board[j]?.color===t){if(!clear.has(j)){clear.add(j);queue.push(j)}}}}
  if(clear.size===0)break;
- let gained=0,count=0,removedMulti=0;for(const i of clear){const p=board[i];if(!p)continue;count++;if(p.multi)removedMulti++;cells[i].classList.add('clearing');gained+=(p.special?180:100);}
- if(!count)break;const now=performance.now();if(cascade===0)bonusPulse(now);gained=(gained+speedBonus)*multiplier*Math.max(1,1+cascade*.5);score+=Math.round(gained);if(removedMulti){multiplier=Math.min(8,multiplier+removedMulti);announce('배율 UP! ×'+multiplier);}const focus=prefer>=0?prefer:[...clear][0];floating('+'+fmt(gained),Math.max(0,focus));if(count>=7){vibrate(65);audio(760+Math.min(cascade,5)*110,.14)}else{vibrate(18);audio(520+Math.min(cascade,5)*85)}update();
- await pauseSleep(120);if(token!==myToken||mode==='ended')return;
+ let gained=0,count=0,removedMulti=0;
+ const popped=[];
+ for(const i of clear){
+  const p=board[i];if(!p)continue;
+  popped.push(i);count++;
+  if(p.multi)removedMulti++;
+  gained+=(p.special?180:100);
+ }
+ if(!count)break;const now=performance.now();if(cascade===0)bonusPulse(now);gained=(gained+speedBonus)*multiplier*Math.max(1,1+cascade*.5);score+=Math.round(gained);if(removedMulti){multiplier=Math.min(8,multiplier+removedMulti);announce('배율 UP! ×'+multiplier);}const focus=prefer>=0?prefer:[...clear][0];floating('+'+fmt(gained),Math.max(0,focus));
+ // Same squash-pop, colored splash and rising pop word; no coin-flying animation.
+ bubbleSplash(popped,count,cascade);
+ const popStep=count>=7?24:32;
+ const maxSteps=12;
+ for(let n=0;n<popped.length;n++){
+  const index=popped[n],delay=Math.min(n,maxSteps-1)*popStep;
+  setTimeout(()=>{
+   if(token!==myToken||mode==='ended')return;
+   cells[index].classList.add('clearing');
+   // Match the bubble game's per-pop pitch changes and tactile feedback.
+   if(n<maxSteps)playBubblePop(count+Math.min(cascade,5)+n*.15);
+   bubblePopHaptic(count>=7);
+  },delay);
+ }
+ update();
+ await pauseSleep(350+(Math.min(popped.length,maxSteps)-1)*popStep);
+ if(token!==myToken||mode==='ended')return;
  for(const i of clear)board[i]=null;for(const [i,type] of protect)if(board[i]){board[i].special=type;board[i].multi=false;}
  const fallRows=new Map();
  for(let c=0;c<W;c++){
