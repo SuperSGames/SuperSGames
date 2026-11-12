@@ -48,22 +48,21 @@ button{font:inherit;cursor:pointer;color:inherit;touch-action:manipulation}
 /* Matching original bubble squish-pop motion, using the existing raster art. */
 @keyframes bubbleBang{0%{transform:scale(1)}38%{transform:scale(1.3,.82)}65%{transform:scale(.88,1.27)}100%{transform:scale(1.5);opacity:0}}
 @keyframes bubbleJelly{0%{filter:brightness(1)}45%{filter:brightness(1.5) saturate(1.5)}100%{filter:brightness(2);opacity:0}}
-/* Keep the original bubble crisp; animate a raster duplicate behind it as the colored halo. */
-.cell .bubbleGlowLayer{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:0;opacity:0;pointer-events:none;user-select:none;transform:scale(1.04)}
-.cell>img:not(.bubbleGlowLayer){z-index:1}
-@keyframes bubbleFlameHalo{0%,100%{opacity:.52;filter:blur(1.2px) drop-shadow(0 0 2px rgba(255,82,28,.9));transform:scale(1.03)}45%{opacity:.98;filter:blur(2.2px) drop-shadow(0 0 5px rgba(255,45,12,1));transform:scale(1.1)}72%{opacity:.7;filter:blur(1.5px) drop-shadow(0 0 3px rgba(255,128,24,.95));transform:scale(1.05)}}
-@keyframes bubbleStarHalo{0%,100%{opacity:.5;filter:blur(1.2px) drop-shadow(0 0 2px rgba(0,174,255,.92));transform:scale(1.03)}22%,42%{opacity:1;filter:blur(2.5px) drop-shadow(0 0 5px rgba(20,219,255,1));transform:scale(1.12)}68%{opacity:.68;filter:blur(1.4px) drop-shadow(0 0 3px rgba(25,108,255,.98));transform:scale(1.06)}}
-@keyframes bubbleCubeHalo{0%{opacity:.58;filter:blur(1.3px) drop-shadow(0 0 3px rgba(255,54,178,.95));transform:scale(1.04)}25%{opacity:.9;filter:blur(2px) drop-shadow(0 0 4px rgba(255,194,24,1));transform:scale(1.08)}50%{opacity:.95;filter:blur(2.2px) drop-shadow(0 0 5px rgba(0,205,255,1));transform:scale(1.11)}75%{opacity:.9;filter:blur(2px) drop-shadow(0 0 4px rgba(145,77,255,1));transform:scale(1.08)}100%{opacity:.58;filter:blur(1.3px) drop-shadow(0 0 3px rgba(255,54,178,.95));transform:scale(1.04)}}
-@keyframes bubbleMultiHalo{0%,100%{opacity:.55;filter:blur(1.2px) drop-shadow(0 0 2px rgba(255,166,15,.95));transform:scale(1.03)}45%{opacity:1;filter:blur(2.4px) drop-shadow(0 0 5px rgba(255,221,28,1));transform:scale(1.11)}72%{opacity:.72;filter:blur(1.5px) drop-shadow(0 0 3px rgba(255,126,0,1));transform:scale(1.05)}}
-#board .cell.matchEffect.effect-flame .bubbleGlowLayer{animation:bubbleFlameHalo .68s ease-in-out 1}
-#board .cell.matchEffect.effect-star .bubbleGlowLayer{animation:bubbleStarHalo .48s steps(2,end) 1}
-#board .cell.matchEffect.effect-cube .bubbleGlowLayer{animation:bubbleCubeHalo .95s linear 1}
-#board .cell.matchEffect.effect-multi .bubbleGlowLayer{animation:bubbleMultiHalo .62s ease-in-out 1}
+/* Outline-only indicators: the board stays untouched and only the puzzle edge lights up. */
+#board .cell.matchEffect::after,#board .cell.rainbowSpecial::after{content:"";position:absolute;inset:2px;border:3px solid transparent;border-radius:18px;opacity:0;pointer-events:none;z-index:3}
+@keyframes flameOutline{0%,100%{opacity:.72;border-color:#ff6938;box-shadow:0 0 2px #ff4c25,inset 0 0 2px #ffd17a}45%{opacity:1;border-color:#ff3a16;box-shadow:0 0 5px #ff4a20,inset 0 0 4px #fff0ad}72%{opacity:.8;border-color:#ff9a34;box-shadow:0 0 3px #ff7b20,inset 0 0 2px #ffe09a}}
+@keyframes starOutline{0%,100%{opacity:.7;border-color:#11bdf4;box-shadow:0 0 2px #08a9ff,inset 0 0 2px #b7f7ff}22%,42%{opacity:1;border-color:#d9fbff;box-shadow:0 0 6px #12d9ff,inset 0 0 4px #fff}68%{opacity:.82;border-color:#277dff;box-shadow:0 0 3px #168eff,inset 0 0 2px #a5efff}}
+@keyframes cubeOutline{0%{opacity:.8;border-color:#ff3fb5;box-shadow:0 0 3px #ff3fb5,inset 0 0 2px #ffd0ef}25%{opacity:1;border-color:#ffd21f;box-shadow:0 0 5px #ffd21f,inset 0 0 3px #fff3ad}50%{opacity:1;border-color:#00d7ff;box-shadow:0 0 5px #00d7ff,inset 0 0 3px #caffff}75%{opacity:1;border-color:#995cff;box-shadow:0 0 5px #995cff,inset 0 0 3px #e2d2ff}100%{opacity:.8;border-color:#ff3fb5;box-shadow:0 0 3px #ff3fb5,inset 0 0 2px #ffd0ef}}
+@keyframes multiOutline{0%,100%{opacity:.75;border-color:#ffb914;box-shadow:0 0 2px #ff9d00,inset 0 0 2px #fff0a3}45%{opacity:1;border-color:#fff36a;box-shadow:0 0 6px #ffd21f,inset 0 0 4px #fff}72%{opacity:.85;border-color:#ff8f00;box-shadow:0 0 3px #ffac00,inset 0 0 2px #ffe3a0}}
+#board .cell.matchEffect.effect-flame::after{animation:flameOutline .68s ease-in-out 1}
+#board .cell.matchEffect.effect-star::after{animation:starOutline .48s steps(2,end) 1}
+#board .cell.matchEffect.effect-cube::after{animation:cubeOutline .95s linear 1}
+#board .cell.matchEffect.effect-multi::after{animation:multiOutline .62s ease-in-out 1}
 #board .cell.rainbowSpecial{z-index:4}
-#board .cell.rainbowSpecial.effect-flame .bubbleGlowLayer{animation:bubbleFlameHalo 1.1s ease-in-out infinite}
-#board .cell.rainbowSpecial.effect-star .bubbleGlowLayer{animation:bubbleStarHalo .82s steps(2,end) infinite}
-#board .cell.rainbowSpecial.effect-cube .bubbleGlowLayer{animation:bubbleCubeHalo 1.05s linear infinite}
-#board .cell.rainbowSpecial.effect-multi .bubbleGlowLayer{animation:bubbleMultiHalo .9s ease-in-out infinite}
+#board .cell.rainbowSpecial.effect-flame::after{animation:flameOutline 1.1s ease-in-out infinite}
+#board .cell.rainbowSpecial.effect-star::after{animation:starOutline .82s steps(2,end) infinite}
+#board .cell.rainbowSpecial.effect-cube::after{animation:cubeOutline 1.05s linear infinite}
+#board .cell.rainbowSpecial.effect-multi::after{animation:multiOutline .9s ease-in-out infinite}
 /* Reuse existing WebP bubble artwork for particles; no drawn CSS/SVG shapes. */
 .bubbleSplashPiece,.bubbleSplashHalo{position:absolute;pointer-events:none;user-select:none;object-fit:contain;will-change:transform,opacity}
 .bubbleSplashPiece{z-index:9;width:17px;height:17px;animation:bubbleSplashPop .68s cubic-bezier(.1,.7,.2,1) forwards}
@@ -393,7 +392,7 @@ function render(fallRows=null){for(let i=0;i<N;i++){
  cell.className='cell'+(i===sel?' selected':'')+(hintPair?.includes(i)?' hinted':'')+(effect?' effect-'+effect+' rainbowSpecial':'')+(p?.special?' '+p.special:'')+(rows>0?' dropped':'');
  if(rows>0)cell.style.setProperty('--fall-offset',(-rows*100)+'%');else cell.style.removeProperty('--fall-offset');
  cell.replaceChildren();
- if(!p)continue;const img=document.createElement('img');img.className=TYPES[p.color]==='pink'?'orbPink':'';img.src=ASSETS[p.color];img.alt=TYPES[p.color]+' 블록';img.draggable=false;img.decoding='async';img.onerror=()=>{hasImgError.add(img.src);img.style.display='none';if(!cell.querySelector('.textFallback')){const t=document.createElement('strong');t.className='textFallback';t.textContent=['고양이','쥐','물고기','발','털실'][p.color];t.style.fontSize='11px';cell.append(t);}};if(effect){const glow=img.cloneNode(false);glow.className='bubbleGlowLayer';glow.alt='';glow.setAttribute('aria-hidden','true');cell.append(glow)}cell.append(img);
+ if(!p)continue;const img=document.createElement('img');img.className=TYPES[p.color]==='pink'?'orbPink':'';img.src=ASSETS[p.color];img.alt=TYPES[p.color]+' 블록';img.draggable=false;img.decoding='async';img.onerror=()=>{hasImgError.add(img.src);img.style.display='none';if(!cell.querySelector('.textFallback')){const t=document.createElement('strong');t.className='textFallback';t.textContent=['고양이','쥐','물고기','발','털실'][p.color];t.style.fontSize='11px';cell.append(t);}};cell.append(img);
  if(p.multi){const t=document.createElement('div');t.className='overlaySymbol multiSymbol';t.textContent='×'+(multiplier+1);cell.append(t)}
  }}
 function update(){dom.score.textContent=fmt(score);dom.best.textContent=fmt(saved.best);dom.combo.style.width=Math.min(100,speedBonus/10)+'%';dom.mult.textContent='×'+multiplier;dom.timer.textContent=String(Math.max(0,Math.ceil(remaining))).padStart(2,'0');dom.timerStat.classList.toggle('danger',remaining<=10&&mode==='running');dom.bar.style.width=Math.max(0,remaining/60*100)+'%';dom.speed.textContent=(performance.now()<blazingUntil?'블레이징! ':'스피드 ')+(speedBonus>0?'+':'')+speedBonus;dom.status.textContent=mode==='idle'?'READY':mode==='running'?'PLAY':mode==='paused'?'PAUSE':'END';dom.play.textContent=mode==='idle'?'게임 시작':mode==='running'||mode==='paused'?'다시하기':'다시 도전';dom.pause.textContent=mode==='paused'?'계속':'정지';}
@@ -434,7 +433,7 @@ async function settle(initial=null,prefer=-1,fromSwap=true){const myToken=token;
   if(p.multi)removedMulti++;
   gained+=(p.special?180:100);
  }
- if(!count)break;const now=performance.now();if(cascade===0)bonusPulse(now);gained=(gained+speedBonus)*multiplier*Math.max(1,1+cascade*.5);score+=Math.round(gained);if(removedMulti){multiplier=Math.min(8,multiplier+removedMulti);announce('배율 UP! ×'+multiplier);}const focus=prefer>=0?prefer:[...clear][0];floating('+'+fmt(gained),Math.max(0,focus));for(const [i,effect] of effects){cells[i].classList.add('matchEffect','effect-'+effect);const base=cells[i].querySelector('img:not(.bubbleGlowLayer)');if(base&&!cells[i].querySelector('.bubbleGlowLayer')){const glow=base.cloneNode(false);glow.className='bubbleGlowLayer';glow.alt='';glow.setAttribute('aria-hidden','true');cells[i].insertBefore(glow,base);}}if(effects.size)await pauseSleep(220);
+ if(!count)break;const now=performance.now();if(cascade===0)bonusPulse(now);gained=(gained+speedBonus)*multiplier*Math.max(1,1+cascade*.5);score+=Math.round(gained);if(removedMulti){multiplier=Math.min(8,multiplier+removedMulti);announce('배율 UP! ×'+multiplier);}const focus=prefer>=0?prefer:[...clear][0];floating('+'+fmt(gained),Math.max(0,focus));for(const [i,effect] of effects){cells[i].classList.add('matchEffect','effect-'+effect);}if(effects.size)await pauseSleep(220);
  // Use the exact original pop sequence: group-by-group, one tile at a time.
  const seenPops=new Set();
  const popGroups=[];
