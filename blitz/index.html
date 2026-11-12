@@ -49,10 +49,11 @@ button{font:inherit;cursor:pointer;color:inherit;touch-action:manipulation}
 @keyframes bubbleBang{0%{transform:scale(1)}38%{transform:scale(1.3,.82)}65%{transform:scale(.88,1.27)}100%{transform:scale(1.5);opacity:0}}
 @keyframes bubbleJelly{0%{filter:brightness(1)}45%{filter:brightness(1.5) saturate(1.5)}100%{filter:brightness(2);opacity:0}}
 /* Two-layer puzzle-edge glow: a crisp rim plus a blurred halo behind it. */
-#board .cell.matchEffect::before,#board .cell.rainbowSpecial::before,#board .cell.matchEffect::after,#board .cell.rainbowSpecial::after{content:"";position:absolute;inset:3px;border-radius:18px;opacity:0;pointer-events:none}
-#board .cell.matchEffect::before,#board .cell.rainbowSpecial::before{border:3px solid transparent;z-index:2;filter:blur(4px)}
-#board .cell.matchEffect::after,#board .cell.rainbowSpecial::after{border:2px solid transparent;z-index:3}
-@keyframes flameHalo{0%,100%{opacity:.42;border-color:#ff6a32;filter:blur(3px)}45%{opacity:.95;border-color:#ff3213;filter:blur(5px)}72%{opacity:.62;border-color:#ffae46;filter:blur(4px)}}
+#board .cell.matchEffect,#board .cell.rainbowSpecial{overflow:visible;z-index:7}
+#board .cell.matchEffect::before,#board .cell.rainbowSpecial::before,#board .cell.matchEffect::after,#board .cell.rainbowSpecial::after{content:"";position:absolute;inset:1px;border-radius:20px;opacity:0;pointer-events:none}
+#board .cell.matchEffect::before,#board .cell.rainbowSpecial::before{inset:-1px;border:4px solid transparent;z-index:2;filter:blur(6px)}
+#board .cell.matchEffect::after,#board .cell.rainbowSpecial::after{inset:2px;border:1px solid transparent;z-index:3}
+@keyframes flameHalo{0%,100%{opacity:.42;border-color:#ff6a32;filter:blur(5px)}45%{opacity:.95;border-color:#ff3213;filter:blur(5px)}72%{opacity:.62;border-color:#ffae46;filter:blur(6px)}}
 @keyframes flameCore{0%,100%{opacity:.82;border-color:#ff9a4a;box-shadow:0 0 2px #ff5725}45%{opacity:1;border-color:#fff0ad;box-shadow:0 0 4px #ff3c16}72%{opacity:.9;border-color:#ffbd5b;box-shadow:0 0 3px #ff7b22}}
 @keyframes starHalo{0%,100%{opacity:.4;border-color:#10bdf4;filter:blur(3px)}22%,42%{opacity:1;border-color:#11d9ff;filter:blur(5px)}68%{opacity:.58;border-color:#347fff;filter:blur(4px)}}
 @keyframes starCore{0%,100%{opacity:.82;border-color:#4bdcff;box-shadow:0 0 2px #08a9ff}22%,42%{opacity:1;border-color:#e4fdff;box-shadow:0 0 5px #12d9ff}68%{opacity:.9;border-color:#4c9bff;box-shadow:0 0 3px #168eff}}
