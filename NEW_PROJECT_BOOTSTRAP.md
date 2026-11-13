@@ -18,6 +18,7 @@
 - `PROJECT_TEMPLATES/MS_STORE_SUBMISSION.md` → 새 저장소 루트 `MS_STORE_SUBMISSION.md`
 - `PROJECT_TEMPLATES/AGENTS_MS_STORE_SECTION.md` → 새 저장소 `AGENTS.md` 끝에 추가
 - `PROJECT_TEMPLATES/AGENTS_ART_ASSET_SECTION.md` → 새 저장소 `AGENTS.md`에 최우선 그림 지침으로 추가
+- **`PROJECT_TEMPLATES/UI.md` → 새 게임 저장소 루트 `UI.md`에 반드시 복사**
 
 ## 현재 적용 저장소
 
@@ -33,6 +34,7 @@
 1. Toss용과 Microsoft 심사용을 처음부터 분리한다.
 2. 새 프로젝트의 실제 공개 주소와 자동배포 경로를 확인한다.
 3. `AGENTS.md`에 Microsoft Store 규칙과 도형 조립 그림 금지·실제 이미지 에셋 사용 규칙을 추가한다.
+3-1. **중앙 `PROJECT_TEMPLATES/UI.md`를 새 프로젝트 루트 `UI.md`로 복사**하고, 새 `AGENTS.md`의 최상위 규칙에서 `UI.md`를 필수로 읽도록 명시한다. UI 원화에는 가변 숫자·문구·게이지 채움·알림(!/NEW/점)을 절대 그리지 않고, PNG RGBA 투명 및 2px 셀 경계를 실제 픽셀로 검사한다. 이 단계를 생략하면 프로젝트 초기화 미완료다.
 4. `MS_STORE_SUBMISSION.md`를 복사한다.
 5. Microsoft 심사용에는 유료·광고·광고 보상·광고 단서찾기·랭킹을 넣지 않는다.
 6. 웹 실행 테스트를 먼저 한다.
@@ -54,3 +56,12 @@
 4. 앱별 `appName`, 광고 ID, 인앱결제 SKU/가격/검증 서버, 게임센터 랭킹, 프로모션 TEST/운영 코드 및 검토 상태는 절대 다른 게임에서 복사하지 않는다. 실제 키는 안전한 Secrets에만 보관한다.
 5. 테스트/운영 AIT를 명시적으로 나누고, 미확인 필수 값이 있는 운영 빌드는 차단한다. 콘솔 승인, 업로드, QR 실기기 테스트 및 출시를 검증 없이 완료했다고 주장하지 않는다.
 6. 게임 UI·저장 데이터·Microsoft 빌드를 보호하고 결과물 `.ait`를 사용자에게 실제 다운로드 링크로 준다. 
+
+
+## [최우선] 이후 새로 만드는 게임에도 UI.md 자동 포함 (2026-11-13)
+
+- **모든 새 SuperSGames 게임 저장소**는 최초 코드/아트 제작 전에 중앙 [PROJECT_TEMPLATES/UI.md](PROJECT_TEMPLATES/UI.md)를 루트 `UI.md`에 복사한다.
+- 새 `AGENTS.md`의 첫머리에 "UI 원화·이미지 에셋 작업 전 `UI.md`를 반드시 읽고, 동적 정보와 투명 스프라이트 규칙을 준수한다"를 넣는다.
+- `UI.md` 파일 존재 + `AGENTS.md` 참조 확인을 **신규 프로젝트 생성 완료 조건**으로 검사한다. 파일 없이 작업을 시작하거나 단순히 중앙 링크가 있다는 이유로 적용 완료라 하지 않는다.
+- 새 프로젝트가 GitHub 저장소가 아니라 기존 저장소의 하위 게임 폴더라면 해당 폴더에 `UI.md`를 복사하고 그 폴더 지침 또는 최상위 `AGENTS.md`에 명시한다.
+- 생성 절차를 거치지 않고 사용자가 GitHub에서 빈 저장소를 직접 만들었다면 문서가 스스로 생성되는 것은 아니다. **그 저장소에 첫 작업을 할 때 즉시 설치**한다.
