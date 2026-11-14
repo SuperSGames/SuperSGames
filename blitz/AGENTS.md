@@ -1,5 +1,12 @@
 # blitz 게임 작업 지침
 
+## [최우선 2026-11-14] Cloudflare 테스트웹 자동배포 및 실제 반영 검증
+
+- 모든 게임 수정/적용 시 **[CLOUDFLARE_DEPLOYMENT.md](../CLOUDFLARE_DEPLOYMENT.md)** 필독. 신규 게임에는 중앙 **[PROJECT_TEMPLATES/CLOUDFLARE_DEPLOYMENT.md](../PROJECT_TEMPLATES/CLOUDFLARE_DEPLOYMENT.md)** 설치.
+- **최신 소스 확인 → 최소 수정 → 기존 빌드 → GitHub 커밋 → 해당 Cloudflare 자동배포 성공 확인 → 공개 테스트웹 최신 변경 확인**까지 기본 범위. 무의미한 Cloudflare 재로그인 요구, 임의 연결·사이트 변경 금지.
+- 커밋 성공과 웹 배포 성공을 구별하고, 검증하지 않은 웹 반영을 성공이라 하지 않는다. Cloudflare 접근 권한이 없으면 미확인으로 보고.
+
+
 ## [최우선 v4.0] 모든 클릭 버튼 상태 원화 필수 (2026-11-13)
 
 - **UI 원화 제작 전 반드시 이 저장소의 UI.md v4.0 전문을 읽는다.** 실제 최신 게임의 모든 화면에서 클릭 가능한 버튼·탭·X·스위치·상점·광고 UI를 전수조사하고 고유 기능/크기/상태 목록을 만든다. 메인에 항상 보이는 주요 버튼을 누락하지 않는다.
