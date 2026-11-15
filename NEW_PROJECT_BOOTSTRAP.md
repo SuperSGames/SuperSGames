@@ -18,7 +18,7 @@
 - `PROJECT_TEMPLATES/MS_STORE_SUBMISSION.md` → 새 저장소 루트 `MS_STORE_SUBMISSION.md`
 - `PROJECT_TEMPLATES/AGENTS_MS_STORE_SECTION.md` → 새 저장소 `AGENTS.md` 끝에 추가
 - `PROJECT_TEMPLATES/AGENTS_ART_ASSET_SECTION.md` → 새 저장소 `AGENTS.md`에 최우선 그림 지침으로 추가
-- **`PROJECT_TEMPLATES/UI.md` → 새 게임 저장소 루트 `UI.md`에 반드시 복사**
+- **새 게임 루트 `UI.md`는 이 저장소의 경량 [UI.md](UI.md)를 복사**하고, 상세 규칙은 중앙 `PROJECT_TEMPLATES/UI.md` 링크에서 읽는다. 47KB 전문을 프로젝트마다 복제하지 않는다.
 
 ## 현재 적용 저장소
 
@@ -34,7 +34,7 @@
 1. Toss용과 Microsoft 심사용을 처음부터 분리한다.
 2. 새 프로젝트의 실제 공개 주소와 자동배포 경로를 확인한다.
 3. `AGENTS.md`에 Microsoft Store 규칙과 도형 조립 그림 금지·실제 이미지 에셋 사용 규칙을 추가한다.
-3-1. **중앙 `PROJECT_TEMPLATES/UI.md`를 새 프로젝트 루트 `UI.md`로 복사**하고, 새 `AGENTS.md`의 최상위 규칙에서 `UI.md`를 필수로 읽도록 명시한다. UI 원화에는 가변 숫자·문구·게이지 채움·알림(!/NEW/점)을 절대 그리지 않고, PNG RGBA 투명 및 2px 셀 경계를 실제 픽셀로 검사한다. 이 단계를 생략하면 프로젝트 초기화 미완료다.
+3-1. **경량 `UI.md` 안내문을 새 프로젝트 루트에 설치하고 중앙 `PROJECT_TEMPLATES/UI.md` 원문을 연결**하며, 새 `AGENTS.md`의 최상위 규칙에서 `UI.md`를 필수로 읽도록 명시한다. UI 원화에는 가변 숫자·문구·게이지 채움·알림(!/NEW/점)을 절대 그리지 않고, PNG RGBA 투명 및 2px 셀 경계를 실제 픽셀로 검사한다. 이 단계를 생략하면 프로젝트 초기화 미완료다.
 4. `MS_STORE_SUBMISSION.md`를 복사한다.
 5. Microsoft 심사용에는 유료·광고·광고 보상·광고 단서찾기·랭킹을 넣지 않는다.
 6. 웹 실행 테스트를 먼저 한다.
@@ -60,16 +60,16 @@
 
 ## [최우선] 이후 새로 만드는 게임에도 UI.md 자동 포함 (2026-11-13)
 
-- **모든 새 SuperSGames 게임 저장소**는 최초 코드/아트 제작 전에 중앙 [PROJECT_TEMPLATES/UI.md](PROJECT_TEMPLATES/UI.md)를 루트 `UI.md`에 복사한다.
+- **모든 새 SuperSGames 게임 저장소**는 최초 코드/아트 제작 전에 루트 [UI.md](UI.md)의 경량 안내문을 해당 프로젝트 `UI.md`로 설치한다. 상세 규칙의 단일 원본은 [PROJECT_TEMPLATES/UI.md](PROJECT_TEMPLATES/UI.md)이다.
 - 새 `AGENTS.md`의 첫머리에 "UI 원화·이미지 에셋 작업 전 `UI.md`를 반드시 읽고, 동적 정보와 투명 스프라이트 규칙을 준수한다"를 넣는다.
-- `UI.md` 파일 존재 + `AGENTS.md` 참조 확인을 **신규 프로젝트 생성 완료 조건**으로 검사한다. 파일 없이 작업을 시작하거나 단순히 중앙 링크가 있다는 이유로 적용 완료라 하지 않는다.
-- 새 프로젝트가 GitHub 저장소가 아니라 기존 저장소의 하위 게임 폴더라면 해당 폴더에 `UI.md`를 복사하고 그 폴더 지침 또는 최상위 `AGENTS.md`에 명시한다.
+- 경량 `UI.md` 파일 존재 + 중앙 원문 링크 유효성 + `AGENTS.md` 참조 확인을 **신규 프로젝트 생성 완료 조건**으로 검사한다. 파일만 있고 원문을 읽을 수 없으면 규칙 검증을 완료했다고 하지 않는다.
+- 새 프로젝트가 기존 저장소의 하위 게임 폴더라면 해당 폴더에 경량 `UI.md`를 복사하고 그 폴더 지침 또는 최상위 `AGENTS.md`에 명시한다.
 - 생성 절차를 거치지 않고 사용자가 GitHub에서 빈 저장소를 직접 만들었다면 문서가 스스로 생성되는 것은 아니다. **그 저장소에 첫 작업을 할 때 즉시 설치**한다.
 
 
 ## [필수 v4.0] 신규 프로젝트 버튼 상태 원화 설치·검수
 
-- 새 게임 생성 시 중앙 PROJECT_TEMPLATES/UI.md **최신 v4.0**을 복사한다. 버전이 낮거나 파일이 없으면 초기화가 미완료다.
+- 새 게임 생성 시 루트의 경량 `UI.md`를 설치하고 중앙 `PROJECT_TEMPLATES/UI.md` **최신 v4.0 전문**을 참조한다. 안내문/링크가 없거나 원문 버전이 확인되지 않으면 초기화 검증이 미완료다.
 - AGENTS.md의 첫머리에 **모든 클릭 버튼마다 별개 normal/pressed 원화 필수**, ON/OFF 스위치는 상태별 normal/pressed 총 4종, 탭은 selected 포함, 실제 필요한 disabled 포함, 버튼마다 독립 터치 동작·아이콘·문구 레이어라는 규칙을 넣는다.
 - 메인·HUD·설정·상점·결과·하단바 등의 버튼을 최신 코드에서 전수조사한 목록과 자산 상태표를 만든 뒤 그린다. 필요한 버튼과 상태를 빠뜨리면 완료 금지.
 - 그림은 한 셀에 한 UI 원화의 한 상태만, RGBA 완전 투명, 정확한 크기, 셀 경계 2px alpha=0, 겹침 없이 검사한다. 수치·문구·알림은 코드 레이어로 분리한다.
