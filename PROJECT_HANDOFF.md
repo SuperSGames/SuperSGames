@@ -6,7 +6,7 @@
 - 냥냥버블팡: `SuperSGames/bubble`
 - 냥냥검사: `SuperSGames/sword`
 - 냥냥 밀어냥/소코반: `SuperSGames/sokoban`
-- 냥냥수비대: `SuperSGames/defense`
+- 냥냥수비대: `SuperSGames/defense` 저장소가 남아 있지만 **사용자가 프로젝트 삭제를 밝혔다. 비활성/보관 기록**으로만 취급하고 명시적 재개 요청 없이 현재 개발 대상에 포함하거나 수정하지 않는다.
 - 땅파기: `SuperSGames/dig`
 - 너무 완벽한 내 남편: `SuperSGames/husband`
 - 화투사천성: **별도 저장소** `SuperSGames/hwatu-sichuan`의 `public/index.html`과 `wrangler.toml`(`assets.directory = "./public"`)이 현재 확인된 배포 소스다. 중앙 저장소의 `hwatu/index.html`(약 3.1MB)은 **동일한 배포 입력 경로가 아니므로** 화투사천성 작업 시 임의로 편집·배포하지 않는다.
