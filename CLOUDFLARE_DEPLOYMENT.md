@@ -32,9 +32,8 @@
 - 어떤 MD도 자격 증명·Cloudflare Git 연동을 스스로 만들지 못한다. 최초 연결에 권한이 필요하면 사실대로 보고한다.
 
 ## 새 프로젝트
-- 중앙 `PROJECT_TEMPLATES/CLOUDFLARE_DEPLOYMENT.md`를 새 저장소 루트의 `CLOUDFLARE_DEPLOYMENT.md`로 복사한다.
-- `AGENTS.md` 상단에 본 규칙 필수 참고 문구를 넣는다.
-- Worker 이름·공식 공개 URL·배포 입력 파일·Build/Deploy 명령·실제 Git 연동 상태를 먼저 조사해 프로젝트별 문서에 기록한다.
+- 새로운 게임을 제작한다고 `CLOUDFLARE_DEPLOYMENT.md`·`AGENTS.md` 등 문서를 자동 복사·생성·수정하지 않는다. **사용자가 해당 문서의 생성·편집을 명시적으로 요청했을 때만** 문서 작업을 수행한다.
+- Worker 이름·공식 공개 URL·배포 입력 파일·Build/Deploy 명령·실제 Git 연동 상태를 확인한다. 확인 결과는 채팅으로 보고하며 문서에 자동 기록하지 않는다.
 - 프로젝트별 빌드 구조(정적 HTML 복사/Worker JS/토스·MS 별도)는 **유지**한다.
 
 공식 참고: https://developers.cloudflare.com/workers/ci-cd/builds/ , https://developers.cloudflare.com/workers/ci-cd/builds/configuration/
