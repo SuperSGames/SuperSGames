@@ -1,6 +1,6 @@
 # 냥냥블리츠 — 프로젝트 작업 지침 (경량판, 2026-11-15)
 
-- 공통 개발·배포 규칙은 [상위 AGENTS.md](../AGENTS.md)와 [Cloudflare 규칙](../CLOUDFLARE_DEPLOYMENT.md)을 따른다. 이미지 작업은 [이 폴더 UI.md](UI.md) 및 [원문 UI v4.0](../PROJECT_TEMPLATES/UI.md)을 읽는다.
+- 먼저 [짧은 작업 인계](PROJECT_HANDOFF.md)에서 실제 게임 위치와 관련 문서를 찾는다. 공통 개발·배포 규칙은 [상위 AGENTS.md](../AGENTS.md)와 [Cloudflare 규칙](../CLOUDFLARE_DEPLOYMENT.md)을 필요한 범위로 따른다. 이미지 작업은 [이 폴더 UI.md](UI.md) 및 [원문 UI v4.0](../PROJECT_TEMPLATES/UI.md)을 읽는다. **다른 게임의 수MB HTML·과거 MD는 냥냥블리츠 수정 시 자동으로 읽지 않는다.**
 - 게임 진입점은 [blitz/index.html](index.html)이다. 게임 기능·에셋을 임의로 바꾸거나 다른 게임의 데이터를 섞지 않는다.
 - 414×896 논리 화면과 게임별 확정 UI, 버튼 상태·가변 레이어, 투명 PNG 경계 검사 규칙을 지킨다. SVG/기하도형 조립 그림은 금지한다.
 - 실제 최신 원본 확인 → 최소 수정 → 기존 빌드 → GitHub → 해당 Cloudflare 배포 확인 → 공개 테스트웹에서 수정 내용 확인 순서로 검증한다. 배포되지 않았으면 미확인이라고 말한다.
