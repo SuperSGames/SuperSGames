@@ -64,9 +64,9 @@
 - SDK 지원 버전 및 API는 제작할 때 공식 문서 재확인. 토스앱 5.232.0 이상 지원 프로모션 API는 SDK 3.x에서 Promotion.grantReward({ promotionCode, amount })이다.
 - 사용자에게 비밀 키 공개를 요청하지 말고 저장소에 넣지 않는다. 외부 콘솔 접속/승인/정식 출시가 기술적으로 불가능하면 명확히 구분해 남긴다.
 
-## 7. 새 프로젝트에 자동 설치
+## 7. 새 프로젝트에 문서 자동 설치 금지
 
-- 새 저장소 루트에 TOSS_AUTOMATION.md 참조 문서를 넣고 AGENTS.md에 “토스용 만들어줘” 트리거를 기록한다.
+- 토스 앱 제작만 요청받았다면 게임 코드·설정·AIT 작업만 수행한다. `TOSS_AUTOMATION.md` 문서 추가나 `AGENTS.md` 변경은 **사용자가 해당 문서 편집을 명시적으로 요청한 경우에만** 한다.
 - 이 중앙 원본은 SuperSGames/SuperSGames의 PROJECT_TEMPLATES/TOSS_AUTOMATION.md 에 유지한다.
 - 새 게임별 환경 설정/코드는 따로 보관한다. 중앙 지침만 공통이며 앱별 실식별자·상품·승인은 재사용하지 않는다.
 
