@@ -9,7 +9,7 @@
 - 냥냥수비대: `SuperSGames/defense`
 - 땅파기: `SuperSGames/dig`
 - 너무 완벽한 내 남편: `SuperSGames/husband`
-- 화투사천성: `SuperSGames/hwatu-sichuan`
+- 화투사천성: **별도 저장소** `SuperSGames/hwatu-sichuan`의 `public/index.html`과 `wrangler.toml`(`assets.directory = "./public"`)이 현재 확인된 배포 소스다. 중앙 저장소의 `hwatu/index.html`(약 3.1MB)은 **동일한 배포 입력 경로가 아니므로** 화투사천성 작업 시 임의로 편집·배포하지 않는다.
 - 냥냥블리츠: 이 중앙 저장소의 `blitz/` 하위 폴더 (독립 저장소로 추측하지 않는다).
 - 그 밖의 라이브러리 전용 프로젝트는 해당 프로젝트 MD와 실제 원본/배포 주소가 확인될 때만 처리한다.
 
